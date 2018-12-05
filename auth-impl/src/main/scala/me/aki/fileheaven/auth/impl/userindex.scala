@@ -32,8 +32,7 @@ object UserIndex {
 class UserIndex(session: CassandraSession)(implicit ec: ExecutionContext) {
   import UserIndex._
 
-  private val tableCreation = createTable(session)
-  def prepared[A](future: Future[A]) = tableCreation.flatMap(_ => future)
+  def prepared[A](future: Future[A]) = future
 
   private val selectByNameStatement = prepared { session.prepare(s"SELECT * FROM $TableName WHERE $Name=?") }
   private val selectByEmailStatement = prepared { session.prepare(s"SELECT * FROM $TableName WHERE $Email=?") }
